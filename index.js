@@ -68,7 +68,7 @@ startQueuing = () => {
 		if (message.extra && message.extra[0].text == 'You are queued to join the server') {
 			webserver.passedCaptcha = true
 		}
-		if (message.text) {
+		if (message.text && message.text.includes('Position in queue')) {
 			let queuePlace = message.text.replace(/\u00A7[0-9A-FK-OR]/ig, '').replace('Position in queue: ', '')
 			webserver.queuePlace = queuePlace
 			server.motd = `Place in queue: ${queuePlace}`;
