@@ -13,6 +13,8 @@ let client;
 let server;
 
 let savedPackets = []
+let estimatedTime = []
+let lastQueue = { count: 9999, time: false }
 
 let captcha = {}
 
@@ -70,6 +72,19 @@ startQueuing = () => {
 		}
 		if (message.text && message.text.includes('Position in queue')) {
 			let queuePlace = message.text.replace(/\u00A7[0-9A-FK-OR]/ig, '').replace('Position in queue: ', '')
+			let parsedPlace = parseInt(queuePlace.match(/^\S*/)[0])
+			if (parsedPlace < lastQueue.count) {
+				if (lastQueue.time) {
+					estimatedTime.push(Date.now() / 1000 - lastQueue.time / 1000)
+				}
+				lastQueue = { count: parsedPlace, time: Date.now() }
+			}
+
+			let size = estimatedTime.length
+			let total = estimatedTime.reduce((a, b) => a + b, 0)
+			let timePerPerson = total / size
+			webserver.ETA = timePerPerson * parsedPlace
+
 			webserver.queuePlace = queuePlace
 			server.motd = `Place in queue: ${queuePlace}`;
 		}
