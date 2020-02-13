@@ -27,6 +27,7 @@
             xhr.onreadystatechange = function () {
                 if (this.readyState == 4 && this.status == 200) {
                     const response = JSON.parse(this.responseText);
+                    document.title = `${response.place.match(/^\S*/)[0]} - Queue`
                     document.getElementsByClassName("place")[0].innerHTML = response.place;
                     document.getElementsByClassName("restartQueue")[0].checked = response.restartQueue
                     let passedCaptcha = response.passedCaptcha == 'true' ? '<font color="green">Yes</span>' : '<font color="red">No</span>'
