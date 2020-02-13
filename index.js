@@ -1,4 +1,3 @@
-const mineflayer = require('mineflayer');
 const mc = require('minecraft-protocol');
 const sm = require('string-similarity')
 const opn = require('opn');
