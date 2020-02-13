@@ -78,7 +78,10 @@ startQueuing = () => {
 	client.on('packet', function (data, meta) {
 
 		if (meta.name == 'open_window') {
-			captcha.requiredBlock = JSON.parse(data.windowTitle).text
+			let title = JSON.parse(data.windowTitle).text
+			if (title.includes('Click the')) {
+				captcha.requiredBlock = title
+			}
 		}
 
 		if (meta.name == 'window_items' && captcha.requiredBlock) {
